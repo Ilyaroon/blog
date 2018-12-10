@@ -14,4 +14,11 @@ public class HomeController {
     public String post() {
         return "post";
     }
+
+    @GetMapping("/about")
+    public String about() { return "about"; }
+
+    @GetMapping("/contact")
+    public String contact() { return "contact"; }
+
 }
