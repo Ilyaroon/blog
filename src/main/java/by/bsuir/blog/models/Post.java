@@ -1,5 +1,8 @@
 package by.bsuir.blog.models;
 
+import java.util.Date;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -7,10 +10,10 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(generator = "post_generator")
+    @GeneratedValue(generator = "posts_id_seq")
     @SequenceGenerator(
-            name = "post_generator",
-            sequenceName = "post_sequence",
+            name = "posts_id_seq",
+            sequenceName = "posts_id_seq",
             initialValue = 1
     )
     private Long id;
@@ -19,10 +22,18 @@ public class Post {
     public String title;
 
     @NotBlank
+    public String subtitle;
+
+    @NotBlank
+    @Column(length = 10000)
     public String text;
 
     @NotBlank
     public String author;
+
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date createdAt;
 
     public Post() {
     }
@@ -49,6 +60,14 @@ public class Post {
         this.title = title;
     }
 
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
     public String getText() {
         return text;
     }
@@ -63,5 +82,23 @@ public class Post {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+     public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+    }
+
+    public String getDate() {
+        Format formatter = new SimpleDateFormat("MMMM d, yyyy");
+        return formatter.format(createdAt);
     }
 }
