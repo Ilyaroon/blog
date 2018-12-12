@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="page-heading">
-                    <h1>Create a new post</h1>
+                    <h1 th:text="${action == 'edit'} ?'Edit post' : 'Create a new post'">Create a new post</h1>
                     <!-- <span class="subheading">Create a new post</span> -->
                 </div>
             </div>
@@ -40,39 +40,39 @@
             <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
             <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
             <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-            <form name="sentMessage" id="contactForm" method="post" action="/posts" novalidate>
+            <form name="sentMessage" id="contactForm" method="post" th:action="${action == 'edit'} ? '/posts/' + ${post.id} : '/posts'" novalidate>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Title</label>
-                        <input type="text" class="form-control" placeholder="Title" id="title" name="title" required data-validation-required-message="Please enter title.">
+                        <input type="text" class="form-control" placeholder="Title" id="title" name="title" required data-validation-required-message="Please enter title." th:value="${post?.title}">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Author</label>
-                        <input type="text" class="form-control" placeholder="Author" id="author" name="author" required data-validation-required-message="Please enter author.">
+                        <input type="text" class="form-control" placeholder="Author" id="author" name="author" required data-validation-required-message="Please enter author." th:value="${post?.author}">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                         <label>Subtitle</label>
-                        <input type="text" class="form-control" placeholder="Subtitle" id="subtitle" name="subtitle" required data-validation-required-message="Please enter subtitle.">
+                        <input type="text" class="form-control" placeholder="Subtitle" id="subtitle" name="subtitle" required data-validation-required-message="Please enter subtitle." th:value="${post?.subtitle}">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Text</label>
-                        <textarea rows="5" class="form-control" placeholder="Text" id="text" name="text" required data-validation-required-message="Please enter a text."></textarea>
+                        <textarea rows="5" class="form-control" placeholder="Text" id="text" name="text" required data-validation-required-message="Please enter a text." th:text="${post?.text}"></textarea>
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <br>
                 <div id="success"></div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary" id="sendMessageButton">Create</button>
+                    <button type="submit" class="btn btn-primary" id="sendMessageButton" th:text="${action == 'edit'} ?'Edit' : 'Create'">Create</button>
                 </div>
             </form>
         </div>

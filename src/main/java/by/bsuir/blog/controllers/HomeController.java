@@ -39,11 +39,47 @@ public class HomeController {
     }
 
     @GetMapping("/posts/new")
-    public String newPost() { return "new_post"; }
+    public String newPost(Model model) {
+        model.addAttribute("action", "create");
+        return "form";
+    }
 
     @PostMapping("/posts")
     public String createPost(@ModelAttribute Post post) {
         post = postRepository.save(post);
+        return "redirect:/posts/" + post.getId();
+    }
+
+    @GetMapping("/posts/{id}/edit")
+    public String editPost(@PathVariable long id, Model model) {
+        Post post;
+        try {
+            post = postRepository.getOne(id);
+        } catch(EntityNotFoundException error) {
+            throw new NotFoundError();
+        }
+
+        model.addAttribute("action", "edit");
+        model.addAttribute("post", post);
+        return "form";
+    }
+
+    @PostMapping("/posts/{id}")
+    public String updatePost(@PathVariable long id, @ModelAttribute Post updatedPost) {
+        Post post;
+        try {
+            post = postRepository.getOne(id);
+        } catch(EntityNotFoundException error) {
+            throw new NotFoundError();
+        }
+
+        post.setTitle(updatedPost.getTitle());
+        post.setAuthor(updatedPost.getAuthor());
+        post.setSubtitle(updatedPost.getSubtitle());
+        post.setText(updatedPost.getText());
+
+        postRepository.save(post);
+
         return "redirect:/posts/" + post.getId();
     }
 

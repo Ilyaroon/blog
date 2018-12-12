@@ -7,6 +7,7 @@ $(function() {
     },
     submitSuccess: function($form, event) {
       event.preventDefault(); // prevent default submit behaviour
+      var url = $("form").attr("action");
       // get values from FORM
       var title = $("input#title").val();
       var author = $("input#author").val();
@@ -20,7 +21,7 @@ $(function() {
       $this = $("#sendMessageButton");
       $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
       $.ajax({
-        url: "/posts",
+        url: url,
         type: "POST",
         data: {
           title: title,
